@@ -1,0 +1,76 @@
+version: "3.8"
+services:
+  immich-server:
+    container_name: immich_server
+    image: ghcr.io/immich-app/immich-server:release
+    command: ["start.sh", "immich"]
+    volumes:
+      - ${UPLOAD_LOCATION}:/usr/src/app/upload
+      - /mnt/photos/images:/photos/images:ro #full
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
+    ports:
+      - 2283:3001
+    networks:
+      - immich
+    depends_on:
+      - redis
+      - database
+    restart: unless-stopped
+  immich-microservices:
+    container_name: immich_microservices
+    image: ghcr.io/immich-app/immich-server:release
+    extends:
+      file: hwaccel.transcoding.yml
+      service: quicksync
+    command: ["start.sh", "microservices"]
+    volumes:
+      - ${UPLOAD_LOCATION}:/usr/src/app/upload
+      - /mnt/photos/images:/photos/images:ro #full
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - immich
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - database
+    restart: unless-stopped
+  immich-machine-learning:
+    container_name: immich_machine_learning
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
+    volumes:
+      - /mnt/appdata/immich/model-cache:/cache
+    env_file:
+      - .env
+    networks:
+      - immich
+    restart: unless-stopped
+  redis:
+    container_name: immich_redis
+    image: redis:6.2-alpine@sha256:70a7a5b641117670beae0d80658430853896b5ef269ccf00d1827427e3263fa3
+    networks:
+      - immich
+    restart: unless-stopped
+  database:
+    container_name: immich_postgres
+    image: tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE_NAME}
+      PG_DATA: /var/lib/postgresql/data
+    networks:
+      - immich
+    volumes:
+      - /mnt/appdata/immich/db:/var/lib/postgresql/data
+    restart: unless-stopped
+
+networks:
+  alex_default:
+    name: alex_default
+    external: true
+  immich:
