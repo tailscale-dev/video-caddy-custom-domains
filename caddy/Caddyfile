@@ -1,6 +1,6 @@
 (cloudflare) {
   tls {
-    dns cloudflare abc.123
+    dns cloudflare VRpS9DyCuG6M_kD9XE3BZsEYgfDJ0w-dYVpITAdO
   }
 }
 
@@ -11,7 +11,7 @@ immich.rdu.dotsandstuff.dev {
 }
 
 # audiobookshelf
-abs.rdu.dotsandstuff.dev {
+audiobooks.rdu.dotsandstuff.dev {
   reverse_proxy http://10.42.0.42:2284
   import cloudflare
 }
