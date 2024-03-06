@@ -1,6 +1,6 @@
 (cloudflare) {
   tls {
-    dns cloudflare VRpS9DyCuG6M_kD9XE3BZsEYgfDJ0w-dYVpITAdO
+    dns cloudflare notArealToken-generateme
   }
 }
 
