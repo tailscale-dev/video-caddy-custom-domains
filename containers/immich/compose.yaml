@@ -1,3 +1,4 @@
+---
 version: "3.8"
 services:
   immich-server:
@@ -21,9 +22,6 @@ services:
   immich-microservices:
     container_name: immich_microservices
     image: ghcr.io/immich-app/immich-server:release
-    extends:
-      file: hwaccel.transcoding.yml
-      service: quicksync
     command: ["start.sh", "microservices"]
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
