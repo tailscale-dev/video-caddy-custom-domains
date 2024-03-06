@@ -5,8 +5,8 @@ services:
     image: jellyfin/jellyfin
     container_name: jellyfin
     volumes:
-      - /mnt/appdata/jellyfin:/config
-      - /mnt/storage:/data:ro
+      - /mnt/data/appdata/jellyfin:/config
+      - /mnt/data/media:/data:ro
       - /dev/shm:/transcode
     ports:
       - 2285:8096
@@ -21,10 +21,10 @@ services:
     image: advplyr/audiobookshelf
     container_name: abs
     volumes:
-      - /mnt/storage/audiobooks/library:/audiobooks:ro
-      - /mnt/storage/audiobooks/podcasts:/podcasts
-      - /mnt/appdata/audiobookshelf/metadata:/metadata
-      - /mnt/appdata/audiobookshelf/config:/config
+      - /mnt/data/media/audiobooks/library:/audiobooks:ro
+      - /mnt/data/media/audiobooks/podcasts:/podcasts
+      - /mnt/data/appdata/audiobookshelf/metadata:/metadata
+      - /mnt/data/appdata/audiobookshelf/config:/config
     ports:
       - 2284:80
     restart: unless-stopped

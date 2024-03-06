@@ -7,7 +7,7 @@ services:
     command: ["start.sh", "immich"]
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
-      - /mnt/photos/images:/photos/images:ro #full
+      - /mnt/data/photos/images:/photos/images:ro #full
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env
@@ -25,7 +25,7 @@ services:
     command: ["start.sh", "microservices"]
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
-      - /mnt/photos/images:/photos/images:ro #full
+      - /mnt/data/photos/images:/photos/images:ro #full
       - /etc/localtime:/etc/localtime:ro
     networks:
       - immich
@@ -39,7 +39,7 @@ services:
     container_name: immich_machine_learning
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
     volumes:
-      - /mnt/appdata/immich/model-cache:/cache
+      - /mnt/data/appdata/immich/model-cache:/cache
     env_file:
       - .env
     networks:
@@ -64,7 +64,7 @@ services:
     networks:
       - immich
     volumes:
-      - /mnt/appdata/immich/db:/var/lib/postgresql/data
+      - /mnt/data/appdata/immich/db:/var/lib/postgresql/data
     restart: unless-stopped
 
 networks:
