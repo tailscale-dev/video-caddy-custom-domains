@@ -21,3 +21,13 @@ jellyfin.rdu.dotsandstuff.dev {
   reverse_proxy http://10.42.0.42:2285
   import cloudflare
 }
+
+# proxmox
+#px.rdu.dotsandstuff.dev{
+#  reverse_proxy https://100.88.250.125:8006 {
+#    transport http {
+#      tls_insecure_skip_verify
+#    }
+#  }
+#  import cloudflare
+#}
